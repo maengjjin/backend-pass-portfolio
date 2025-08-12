@@ -11,7 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: portfolio1234
     ports:
       - "3306:3306"
-    volumes:
+    volumes: # 컨테이너가 꺼져도 지워지지 않는 데이터 공간
       - mysql_data:/var/lib/mysql
     networks:
       - monitoring
@@ -25,7 +25,7 @@ services:
       resources:
         limits:
           cpus: "2"  # 최대 2개의 코어 할당
-          memory: 2GB   # 최대 2GB 메모리 할당
+          memory: 1GB   # 최대 1GB 메모리 할당
 
   app:
     build: .
@@ -51,8 +51,8 @@ services:
     networks:
       - monitoring
 
-  prometheus:
-    image: prom/prometheus
+  prometheus: # 데이터를 수집하는 컨테이너
+    image: prom/prometheus # prom/prometheus를 사용해서 컨테이너를 띄움
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -66,7 +66,7 @@ services:
           cpus: '0.5'
           memory: 512M
 
-  grafana:
+  grafana: # 수집하는 데이터의 시각화
     image: grafana/grafana
     container_name: grafana
     ports:
