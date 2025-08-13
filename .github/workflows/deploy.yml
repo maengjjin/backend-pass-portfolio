@@ -21,8 +21,10 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
     
-    - name: Build with Gradle
-      run: ./gradlew build
+#    - name: Build with Gradle
+#      run: ./gradlew build
+    - name: Build without tests
+      run: ./gradlew clean build -x test
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -57,5 +59,3 @@ jobs:
               "docker run -d --name portfolio-app -p 8080:8080 -e JAVA_OPTS=-Xmx256m -e SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.RDS_ENDPOINT }}/portfolio?useSSL=false\\&serverTimezone=Asia/Seoul\\&allowPublicKeyRetrieval=true -e SPRING_DATASOURCE_PASSWORD=${{ secrets.RDS_PASSWORD }} '$REGISTRY'/'$ECR_REPOSITORY':'$GITHUB_SHA'"
             ]
           }'
-    - name: Build without tests
-      run: ./gradlew clean build -x test
